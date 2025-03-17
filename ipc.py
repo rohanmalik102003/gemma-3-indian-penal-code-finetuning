@@ -119,3 +119,44 @@ print(f"Peak reserved memory = {used_memory} GB.")
 print(f"Peak reserved memory for training = {used_memory_for_lora} GB.")
 print(f"Peak reserved memory % of max memory = {used_percentage} %.")
 print(f"Peak reserved memory for training % of max memory = {lora_percentage} %.")
+
+# List of test questions
+test_questions = [
+    "What is the punishment for stealing someone's property? What is the punishment for theft under the Indian Penal Code (IPC)?",
+    "What is the difference between culpable homicide and murder under the Indian Penal Code?",
+    "Explain the concept of 'mens rea' in Indian criminal law. How does it affect criminal liability?",
+    "What are the punishments for different degrees of hurt under the IPC?",
+    "What constitutes criminal conspiracy under Section 120A of the IPC? What is the punishment for it?",
+    "Under what circumstances can self-defense be claimed as a valid defense against criminal charges in India?",
+    "What is the legal definition of 'dowry death' under Section 304B of the IPC? What is the punishment for this offense?",
+    "Explain the concept of 'abetment' under the IPC. How is an abettor punished?"
+]
+# Test each question
+for i, question in enumerate(test_questions):
+    print(f"\n\n===== TESTING QUESTION {i+1} =====\n")
+    print(f"Question: {question}\n")
+    
+    messages = [
+        {"role": "system", "content": "You are an expert legal assistant providing accurate answers based on the Indian Penal Code (IPC)."},
+        {"role": "user", "content": question},
+    ]
+    
+    text = tokenizer.apply_chat_template(
+        messages,
+        add_generation_prompt = True,
+    )
+    
+    outputs = model.generate(
+        **tokenizer([text], return_tensors = "pt").to("cuda"),
+        max_new_tokens = 512,  # Increased for more complete answers
+        temperature = 0.7,
+        top_p = 0.95,
+        top_k = 64,
+    )
+    
+    print("Model response:")
+    print(tokenizer.batch_decode(outputs)[0])
+    print("\n" + "="*50)
+
+model.save_pretrained("gemma-3-indian-penal-code-model")  # Local saving
+tokenizer.save_pretrained("gemma-3-indian-penal-code-model")
