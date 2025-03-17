@@ -38,8 +38,8 @@ torch>=2.0.0
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/gemma-3-ipc-finetuning.git
-   cd gemma-3-ipc-finetuning
+   https://github.com/rohanmalik102003/gemma-3-indian-penal-code-finetuning.git
+   cd gemma-3-indian-penal-code-finetuning
    ```
 
 2. **Install Dependencies**:
